@@ -30,12 +30,20 @@ end
 function love.draw()
 	-- printing hello world!
 	love.graphics.print("Hello World!");
+
 	--printing the table
 	--note that lua indexes at 1 instead of 0
 	--put # in front of a table variable to access its size
-	for i=1,#fruits do
-		love.graphics.print(fruits[i], 100, 100 + 50 * (i -1));
+	--for i=1,#fruits do
+		--love.graphics.print(fruits[i], 100, 100 + 50 * i);
+	--end
+
+	--prints the table with ipairs
+	--v is the value at position i
+	for i,v in ipairs(fruits) do
+		love.graphics.print(v, 100, 100 + 50 * i);
 	end
+
 	--draws a rectangle
 	love.graphics.rectangle("fill", rectX, rectY, 50, 80);
 end
