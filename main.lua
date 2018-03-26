@@ -3,6 +3,8 @@ function love.load()
 	rectX = 100;
 	rectY = 200;
 	speed = 100; --pixels per second
+	fruits = {"apples", "bananas", "pears"};
+	table.insert(fruits, "grapes");
 end
 
 --then update
@@ -28,6 +30,12 @@ end
 function love.draw()
 	-- printing hello world!
 	love.graphics.print("Hello World!");
+	--printing the table
+	--note that lua indexes at 1 instead of 0
+	--put # in front of a table variable to access its size
+	for i=1,#fruits do
+		love.graphics.print(fruits[i], 100, 100 + 50 * (i -1));
+	end
 	--draws a rectangle
 	love.graphics.rectangle("fill", rectX, rectY, 50, 80);
 end
