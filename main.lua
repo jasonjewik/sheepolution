@@ -1,49 +1,35 @@
---initialization
 function love.load()
-	rectX = 100;
-	rectY = 200;
-	speed = 100; --pixels per second
-	fruits = {"apples", "bananas", "pears"};
-	table.insert(fruits, "grapes");
+     Object = require "classic";
+     require "player";
+     require "enemy";
+     require "bullet";
+     player = Player(100, 400, 150);
+     enemy = Enemy(100, 100, 75);
+     bulletTable = {};
 end
 
---then update
 function love.update(dt)
-	--dt stands for delta time, used to syncrhonize speeds across different computers
-	xDir = 0; --direction to go
-	yDir = 0;
+     player:update(dt);
+     enemy:update(dt);
 
-	if love.keyboard.isDown("up") then yDir = -1;
-	elseif love.keyboard.isDown("down") then yDir = 1;
-	else yDir = 0;
-	end
-	if love.keyboard.isDown("right") then xDir = 1;
-	elseif love.keyboard.isDown("left") then xDir = -1;
-	else xDir = 0;
-	end
-
-	rectX = rectX + speed * xDir * dt;
-	rectY = rectY + speed * yDir * dt;
+     for i, v in ipairs(bulletTable) do
+          v:update(dt);
+          v:checkCollision(enemy);
+          if v.dead then
+               table.remove(bulletTable, i);
+          end
+     end
 end
 
---then draw
 function love.draw()
-	-- printing hello world!
-	love.graphics.print("Hello World!");
+     player:draw();
+     enemy:draw();
 
-	--printing the table
-	--note that lua indexes at 1 instead of 0
-	--put # in front of a table variable to access its size
-	--for i=1,#fruits do
-		--love.graphics.print(fruits[i], 100, 100 + 50 * i);
-	--end
+     for i, v in ipairs(bulletTable) do
+          v:draw();
+     end
+end
 
-	--prints the table with ipairs
-	--v is the value at position i
-	for i,v in ipairs(fruits) do
-		love.graphics.print(v, 100, 100 + 50 * i);
-	end
-
-	--draws a rectangle
-	love.graphics.rectangle("fill", rectX, rectY, 50, 80);
+function love.keypressed(key)
+     player:keyPressed(key);
 end
